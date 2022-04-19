@@ -6,11 +6,7 @@ import javax.persistence.*
 /** Represents one of the supported Service Level Agreement options. */
 @Entity
 @Table(name = "billingorder")
-class BillingOrder () {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    var id: Long = 0L
+class BillingOrder: GeneratedIdEntity() {
 
     //e.g.HCMOR520978299453440-1
     @Column(name = "orderid", nullable = false, length = 100)
@@ -45,6 +41,10 @@ class BillingOrder () {
     @Lob
     @Column(name = "order_response", nullable = true, length = 10000)
     var billingOrderResponse: String = ""
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subscription_id", nullable = false)
+    lateinit var subscription: Subscription
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
